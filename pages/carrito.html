@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito</title>
+    <link rel="shortcut icon" href="../img/carrito.png" type="image/x-icon">
+    <!-- BS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- CSS CUSTOM -->
+    <link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+    <header>
+        <div class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div class="container-fluid justify-content-between">
+                <h1 class="text-white">Carrito</h1>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-evenly" id="navbarHeader">
+                    <div class="container d-flex flex-row justify-content-end p-2">
+                        <a href="../index.html" class="btn btn-volver m-0 p-1">
+                            <div class="volver-container d-flex">
+                                <i class="bi bi-arrow-left mx-1"></i>
+                                <p class="m-0">Seguir comprando</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-carrito">
+        <div class="container cards-container my-3 mx-auto gap-3 carrito d-flex flex-column" id="carrito-container">
+        </div>
+    </main>
+
+
+
+    <!-- BS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- MAIN JS -->
+    <script type="module" src="../js/carrito.js"></script>
+</body>
+
+</html>
