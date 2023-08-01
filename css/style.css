@@ -176,3 +176,14 @@ ul {
     text-shadow: 0 0 5px black;
 }
 
+.mas, .menos {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-eliminar {
+    max-height: 40px;
+}

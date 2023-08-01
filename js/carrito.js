@@ -1,4 +1,3 @@
-
 // CONTENEDORES
 let carritoContainer = document.querySelector('#carrito-container');
 
@@ -15,21 +14,24 @@ if (!productosEnLS || !productosEnLS.length) {
 function mostrarCarrito() {
     carritoContainer.innerHTML = "";
     let total = 0;
-    
+
     productosEnLS.forEach((producto) => {
 
         carritoContainer.innerHTML += `
-        <div class="card mb-3 flex-row p-2" style="width: 100%;">
-        <div class="img">
-            <img style="width: 13rem; height: 13rem" src="${producto.img}" class="card-img-carrito" alt="">
-        </div>
-        <div class="info w-100 d-flex justify-content-around align-items-center">
-            <p>Cantidad: ${producto.cantidad}<span></span></p>
-            <p>Precio: $<span>${producto.importe}</span></p>
-            <p>Subtotal: $<span>${producto.cantidad * producto.importe}</span></p>
-            <button class="btn btn-eliminar btn-outline-secondary main-btns bg-dark" id="${producto.id}">Eliminar</button>
-        </div>
-        </div>`;
+            <div class="card mb-3 flex-row p-2" style="width: 100%;">
+                <div class="img">
+                    <img style="width: 13rem; height: 13rem" src="${producto.img}" class="card-img-carrito rounded-2" alt="${producto.nombre}">
+                </div>
+                <div class="w-100 text-center d-flex flex-column justify-content-evenly">
+                    <h2 class="bg-dark align-self-center p-2 rounded-top" style="width: fit-content;">${producto.nombre}</h2>
+                    <div class="info d-flex justify-content-around align-content-center">
+                        <p class="m-0">Precio: $<span>${producto.importe}</span></p>
+                        <p class="m-0">cantidad: <span>${producto.cantidad}</span></p>
+                        <p class="m-0">Subtotal: $<span>${producto.cantidad * producto.importe}</span></p>
+                        <button class="btn btn-eliminar btn-outline-secondary main-btns bg-dark" id="${producto.id}">Eliminar</button>
+                    </div>
+                </div>
+            </div>`;
 
         total = productosEnLS.reduce((acc, producto) => acc + producto.cantidad * producto.importe, 0);
 
@@ -62,29 +64,66 @@ function setBotonesEliminar() {
         btn.addEventListener('click', (e) => {
             let indexEliminar = productosEnLS.findIndex(producto => producto.id === parseInt(e.currentTarget.id));
 
-            productosEnLS.splice(indexEliminar, 1);
+            Swal.fire({
+                title: 'Cuidado',
+                text: "Estas seguro que quieres eliminar este producto?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: 'green',
+                cancelButtonColor: 'red',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    productosEnLS.splice(indexEliminar, 1);
+                    mostrarCarrito();
+                    localStorage.setItem('carrito', JSON.stringify(productosEnLS));
 
-            
-            mostrarCarrito();
-            localStorage.setItem('carrito', JSON.stringify(productosEnLS));
-           
-            if (!productosEnLS.length) {
-                return mostrarTitulo();
-            }
+                    if (!productosEnLS.length) {
+                        return mostrarTitulo();
+                    };
+                };
+            });
         });
     });
 };
 
 // Finalizar compra 
-function finalizarCompra(){
+function finalizarCompra() {
     let btnFinalizarCompra = document.querySelector('#comprar');
 
     btnFinalizarCompra.addEventListener('click', () => {
-        alert('se eliminaran todos los productos del carrito');
-        localStorage.setItem('carrito', JSON.stringify([]));
-        carritoContainer.innerHTML = "";
-        alert('Gracias por comprar');
-        mostrarTitulo();
+
+        Swal.fire({
+            title: 'Confirmar compra',
+            text: "Se eliminaran todos los productos del carrito.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: 'red',
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((res) => {
+            if (res.isConfirmed) {
+
+                localStorage.setItem('carrito', JSON.stringify([]));
+                carritoContainer.innerHTML = "";
+                mostrarTitulo();
+
+                Swal.fire({
+                    position: 'top',
+                    icon: 'success',
+                    title: 'Gracias por su compra',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        })
+
+
+
+        
+       
     });
 };
 

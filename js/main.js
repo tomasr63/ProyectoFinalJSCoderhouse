@@ -64,6 +64,18 @@ const setBotonesAgregarCarrito = () => {
                 carrito.push(productoAgregado);
             }
 
+            Toastify({
+                text: "Producto agregado al carrito",
+                duration: 3000,
+                close: false,
+                gravity: "top",
+                position: "center",
+                stopOnFocus: false,
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #24e1ac)",
+                },
+              }).showToast();
+
             localStorage.setItem('carrito', JSON.stringify(carrito));
             
             actualizarNumCarrito();
@@ -129,17 +141,22 @@ const buscarProductosXPrecio = (e) => {
     if (resultados.length > 0) {
         mostrarProductos(resultados);
     } else {
-        alert("No hay coincidencias.");
-    }
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No se encontraron coincidencias.',
+            confirmButtonText: 'Aceptar'
+        });
+    };
 };
 
 // Ir arriba
-const irArriba = () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-    });
-};
+// const irArriba = () => {
+//     window.scrollTo({
+//         top: 0,
+//         behavior: 'smooth',
+//     });
+// };
 
 // EVENTOS
 btnShowAll.addEventListener("click", mostrarTodos);
