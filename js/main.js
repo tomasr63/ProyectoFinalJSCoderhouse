@@ -1,4 +1,10 @@
-import productos from "./productos.js";
+let productos = [];
+
+fetch("./js/productos.json")
+    .then(productos => productos.json())
+    .then(data => {
+        productos = data;
+});
 
 
 // DOM
@@ -149,14 +155,6 @@ const buscarProductosXPrecio = (e) => {
         });
     };
 };
-
-// Ir arriba
-// const irArriba = () => {
-//     window.scrollTo({
-//         top: 0,
-//         behavior: 'smooth',
-//     });
-// };
 
 // EVENTOS
 btnShowAll.addEventListener("click", mostrarTodos);
