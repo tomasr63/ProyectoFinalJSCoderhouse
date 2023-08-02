@@ -4,12 +4,14 @@ fetch("./js/productos.json")
     .then(productos => productos.json())
     .then(data => {
         productos = data;
-});
+        mostrarTodos();
+    });
 
 
 // DOM
 const btnShowAll = document.querySelector('#btn-show-all');
 const buscarNombre = document.querySelector('#input-buscar');
+let btnsAgregarAlCarrito = document.querySelectorAll('.agregar-al-carrito');
 const numCarrito = document.querySelector('#num-carrito');
 const btnsCat = document.querySelectorAll('.btn-cat');
 const productosContainer = document.querySelector("#cards-container");
@@ -18,12 +20,12 @@ const acordeones = document.querySelectorAll('.acordeon');
 
 
 // MOSTRAR TODOS LOS PRODUCTOS
-const mostrarTodos = () => {
+function mostrarTodos() {
     mostrarProductos(productos);
 }
 
 // Mostrar productos
-const mostrarProductos = (param1) => {
+function mostrarProductos(param1) {
     productosContainer.innerHTML = "";
 
     param1.forEach((producto) => {
@@ -44,50 +46,54 @@ const mostrarProductos = (param1) => {
     setBotonesAgregarCarrito();
 };
 
+
+// Botones agregar al carrito
+function setBotonesAgregarCarrito() {
+    btnsAgregarAlCarrito = document.querySelectorAll('.agregar-al-carrito');
+
+    btnsAgregarAlCarrito.forEach((btn) => {
+        btn.addEventListener('click', agregarAlCarrito);
+    });
+};
+
 // CARRITO
 let carrito;
 let carritoLS = JSON.parse(localStorage.getItem('carrito'));
 
-if (carritoLS) {
+if (!carritoLS) {
+    carrito = [];
+} else {
     carrito = carritoLS;
     actualizarNumCarrito();
-} else {
-    carrito = [];
 }
 
-// Botones agregar al carrito
-const setBotonesAgregarCarrito = () => {
-    let btnsAgregarAlCarrito = document.querySelectorAll('.agregar-al-carrito');
+//Agregar al carrito
+function agregarAlCarrito(e) {
+    let productoAgregado = productos.find((producto) => producto.id === parseInt(e.currentTarget.id));
 
-    btnsAgregarAlCarrito.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            let productoAgregado = productos.find((producto) => producto.id === parseInt(e.currentTarget.id));
+    if (carrito.some(producto => producto.id === parseInt(e.currentTarget.id))) {
+        let index = carrito.findIndex(prod => prod.id === parseInt(e.currentTarget.id));
+        carrito[index].cantidad++;
+    } else {
+        productoAgregado.cantidad = 1;
+        carrito.push(productoAgregado);
+    }
 
-            if (carrito.some(producto => producto.id === parseInt(e.currentTarget.id))) {
-                productoAgregado.cantidad++;
-            } else {
-                productoAgregado.cantidad = 1;
-                carrito.push(productoAgregado);
-            }
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarNumCarrito();
 
-            Toastify({
-                text: "Producto agregado al carrito",
-                duration: 3000,
-                close: false,
-                gravity: "top",
-                position: "center",
-                stopOnFocus: false,
-                style: {
-                  background: "linear-gradient(to right, #00b09b, #24e1ac)",
-                },
-              }).showToast();
-
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            
-            actualizarNumCarrito();
-        });
-    });
-};
+    Toastify({
+        text: "Producto agregado al carrito",
+        duration: 3000,
+        close: false,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: false,
+        style: {
+            background: "linear-gradient(to right, #00b09b, #24e1ac)",
+        },
+    }).showToast();
+}
 
 // Actualizar num Carrito
 function actualizarNumCarrito() {
@@ -164,7 +170,7 @@ btnsCat.forEach(btn => {
 });
 btnPrecio.addEventListener('click', buscarProductosXPrecio);
 acordeones.forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
         this.classList.toggle('active');
 
         let panel = this.nextElementSibling;
